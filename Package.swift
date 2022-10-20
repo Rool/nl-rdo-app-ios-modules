@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-	name: "LunhCheck",
+	name: "RDOToolKit",
 	platforms: [
 		.iOS(.v11)
 	],
@@ -12,6 +12,9 @@ let package = Package(
 		.library(
 			name: "LunhCheck",
 			targets: ["LunhCheck"]),
+		.library(
+			name: "QRGenerator",
+			targets: ["QRGenerator"]),
 	],
 	dependencies: [],
 	targets: [
@@ -21,5 +24,8 @@ let package = Package(
 		.testTarget(
 			name: "LunhCheckTests",
 			dependencies: ["LunhCheck"]),
+		.target(
+			name: "QRGenerator",
+			dependencies: []),
 	]
 )
