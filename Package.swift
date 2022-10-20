@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-	name: "RDOToolKit",
+	name: "RDOModules",
 	platforms: [
 		.iOS(.v11)
 	],
