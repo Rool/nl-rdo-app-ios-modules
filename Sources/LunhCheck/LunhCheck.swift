@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LuhnCheck {
+public class LuhnCheck {
 	
 	private let tokenChars: [String.Element]
 
@@ -22,7 +22,7 @@ class LuhnCheck {
 	/// Check the luhn mod N checksum
 	/// - Parameter token: the token to check
 	/// - Returns: True if this is a valid token
-	func luhnModN(_ token: String) -> Bool {
+	public func luhnModN(_ token: String) -> Bool {
 
 		// for more detail,
 		// see https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm
