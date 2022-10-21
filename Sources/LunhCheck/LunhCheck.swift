@@ -13,10 +13,10 @@ public class LuhnCheck {
 
 	/// Initializer
 	/// - Parameters:
-	///   - alphabet: the alphabet to use
-	public init(alphabet: String = "BCFGJLQRSTUVXYZ23456789") {
+	///   - validTokens: the alphabet to use
+	public init(validTokens: String = "BCFGJLQRSTUVXYZ23456789") {
 
-		self.tokenChars = Array(alphabet)
+		self.tokenChars = Array(validTokens)
 	}
 	
 	/// Check the luhn mod N checksum
