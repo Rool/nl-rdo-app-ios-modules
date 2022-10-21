@@ -5,11 +5,11 @@
 *  SPDX-License-Identifier: EUPL-1.2
 */
 
-import UIKit
-
-public class QRGenerator {
-	
-	public func generate() -> UIImage? {
-		return nil
-	}
-}
+//import UIKit
+//
+//public class QRGenerator {
+//	
+//	public func generate() -> UIImage? {
+//		return nil
+//	}
+//}
