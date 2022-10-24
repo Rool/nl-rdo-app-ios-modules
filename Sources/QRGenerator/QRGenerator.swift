@@ -33,3 +33,16 @@ extension Data {
 		return nil
 	}
 }
+
+extension String {
+	
+	/// Generate a QR image
+	/// - Returns: QR image of the string
+	public func generateQRCode(correctionLevel: CorrectionLevel = .medium) -> UIImage? {
+		
+		if let data = self.data(using: .utf8) {
+			return data.generateQRCode(correctionLevel: correctionLevel)
+		}
+		return nil
+	}
+}

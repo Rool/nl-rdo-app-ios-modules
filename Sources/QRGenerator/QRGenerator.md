@@ -17,8 +17,22 @@ To generate a QR code from a String:
 import QRGenerator
 import UIKit
 
-let message = "This is awesome"
+let message: String = "This is awesome"
 if let qrCode = message.generateQRCode(correctionLevel: .medium) {
+  // qrCode is a UIImage
+  // ...
+}
+
+```
+
+To generate a QR code from Data:
+
+```swift
+import QRGenerator
+import UIKit
+
+let data: Data = "This is awesome data".data(using: .utf8)
+if let qrCode = data?.generateQRCode(correctionLevel: .medium) {
   // qrCode is a UIImage
   // ...
 }
