@@ -19,7 +19,7 @@ extension Data {
 
 	/// Generate a QR image
 	/// - Returns: QR image of the data
-	func generateQRCode(correctionLevel: CorrectionLevel = .medium) -> UIImage? {
+	public func generateQRCode(correctionLevel: CorrectionLevel = .medium) -> UIImage? {
 
 		if let filter = CIFilter(name: "CIQRCodeGenerator") {
 			filter.setValue(self, forKey: "inputMessage")
