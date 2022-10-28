@@ -21,6 +21,8 @@ let package = Package(
 	],
 	dependencies: [
 		.package(
+			// A fork has been used to support both universal links and url schemes
+			// Forked from: https://github.com/openid/AppAuth-iOS
 			url: "https://github.com/Rool/AppAuth-iOS.git",
 			branch: "feature/custom-url-support"
 		)
