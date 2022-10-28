@@ -14,9 +14,17 @@ let package = Package(
 			targets: ["LuhnCheck"]),
 		.library(
 			name: "QRGenerator",
-			targets: ["QRGenerator"])
+			targets: ["QRGenerator"]),
+		.library(
+			name: "OpenIDConnect",
+			targets: ["OpenIDConnect"])
 	],
-	dependencies: [],
+	dependencies: [
+		.package(
+			url: "https://github.com/Rool/AppAuth-iOS.git",
+			branch: "feature/custom-url-support"
+		)
+	],
 	targets: [
 		.target(
 			name: "LuhnCheck",
@@ -30,5 +38,11 @@ let package = Package(
 		.testTarget(
 			name: "QRGeneratorTests",
 			dependencies: ["QRGenerator"]),
+		.target(
+			name: "OpenIDConnect",
+			dependencies: []),
+		.testTarget(
+			name: "OpenIDConnectTests",
+			dependencies: ["OpenIDConnect"])
 	]
 )
