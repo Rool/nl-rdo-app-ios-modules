@@ -40,7 +40,7 @@ let package = Package(
 			dependencies: ["QRGenerator"]),
 		.target(
 			name: "OpenIDConnect",
-			dependencies: []),
+			dependencies: [.product(name: "AppAuth", package: "AppAuth-iOS")]),
 		.testTarget(
 			name: "OpenIDConnectTests",
 			dependencies: ["OpenIDConnect"])

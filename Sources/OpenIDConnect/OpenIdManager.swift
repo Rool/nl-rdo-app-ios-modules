@@ -5,10 +5,10 @@
  *  SPDX-License-Identifier: EUPL-1.2
  */
 
-import Foundation
+import UIKit
 import AppAuth
 
-protocol OpenIdManaging: AnyObject {
+public protocol OpenIdManaging: AnyObject {
 	
 	/// Request an access token
 	/// - Parameters:
@@ -22,7 +22,7 @@ protocol OpenIdManaging: AnyObject {
 		onError: @escaping (Error?) -> Void)
 }
 
-protocol IssuerConfiguration: AnyObject {
+public protocol IssuerConfiguration: AnyObject {
 	
 	var issuerUrl: URL { get }
 
@@ -31,7 +31,7 @@ protocol IssuerConfiguration: AnyObject {
 	var redirectUri: URL { get }
 }
 
-protocol OpenIdManagerToken {
+public protocol OpenIdManagerToken {
 	
 	var idToken: String? { get }
 	var accessToken: String? { get }
@@ -39,6 +39,12 @@ protocol OpenIdManagerToken {
 
 extension OIDTokenResponse: OpenIdManagerToken {
 	
+}
+
+public extension Notification.Name {
+	
+	static let launchingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.launchingOpenIDConnectBrowser")
+	static let closingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.closingOpenIDConnectBrowser")
 }
 
 public class OpenIdManager: OpenIdManaging {
@@ -86,18 +92,18 @@ public class OpenIdManager: OpenIdManaging {
 			if let appAuthState = UIApplication.shared.delegate as? AppAuthState {
 				
 				if #unavailable(iOS 13) {
-					NotificationCenter.default.post(name: .disablePrivacySnapShot, object: nil)
+					NotificationCenter.default.post(name: .launchingOpenIDConnectBrowser, object: nil)
 				}
 				
 				let callBack: OIDAuthStateAuthorizationCallback = { authState, error in
 					
-					NotificationCenter.default.post(name: .enablePrivacySnapShot, object: nil)
+					NotificationCenter.default.post(name: .closingOpenIDConnectBrowser, object: nil)
 					DispatchQueue.main.async {
 						
 						if let lastTokenResponse = authState?.lastTokenResponse {
 							onCompletion(lastTokenResponse)
 						} else {
-							logError("OpenIdManager: \(String(describing: error))")
+//							logError("OpenIdManager: \(String(describing: error))")
 							onError(error)
 						}
 					}
