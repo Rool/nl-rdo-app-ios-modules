@@ -6,7 +6,7 @@
 */
 
 import Foundation
-import AppAuth
+@_exported import AppAuth
 
 public protocol AppAuthState: AnyObject {
 	

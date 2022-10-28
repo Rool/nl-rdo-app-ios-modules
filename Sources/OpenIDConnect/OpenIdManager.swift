@@ -6,7 +6,7 @@
  */
 
 import UIKit
-import AppAuth
+@_exported import AppAuth
 
 public protocol OpenIdManaging: AnyObject {
 	
