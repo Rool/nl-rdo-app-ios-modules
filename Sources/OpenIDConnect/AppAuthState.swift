@@ -8,7 +8,7 @@
 import Foundation
 import AppAuth
 
-protocol AppAuthState: AnyObject {
+public protocol AppAuthState: AnyObject {
 	
 	// login flow
 	var currentAuthorizationFlow: OIDExternalUserAgentSession? { get set }
