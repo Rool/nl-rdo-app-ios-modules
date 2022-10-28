@@ -49,6 +49,8 @@ public extension Notification.Name {
 
 public class OpenIdManager: OpenIdManaging {
 	
+	public init() {}
+	
 	/// Request an access token
 	/// - Parameters:
 	///   - issuerConfiguration: openID configuration
