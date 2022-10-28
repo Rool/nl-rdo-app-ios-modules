@@ -6,7 +6,7 @@
 */
 
 import Foundation
-@_exported import AppAuth
+import AppAuth
 
 extension OIDExternalUserAgentIOSCustomBrowser {
 
