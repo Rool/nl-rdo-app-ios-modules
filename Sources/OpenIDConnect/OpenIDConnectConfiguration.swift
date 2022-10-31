@@ -5,11 +5,13 @@
 *  SPDX-License-Identifier: EUPL-1.2
 */
 
-import Foundation
 import AppAuth
 
-public protocol AppAuthState: AnyObject {
+public protocol OpenIDConnectConfiguration: AnyObject {
 	
-	// login flow
-	var currentAuthorizationFlow: OIDExternalUserAgentSession? { get set }
+	var issuerUrl: URL { get }
+
+	var clientId: String { get }
+
+	var redirectUri: URL { get }
 }

@@ -6,3 +6,9 @@
 */
 
 @_exported import AppAuth
+
+public extension Notification.Name {
+	
+	static let launchingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.launchingOpenIDConnectBrowser")
+	static let closingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.closingOpenIDConnectBrowser")
+}

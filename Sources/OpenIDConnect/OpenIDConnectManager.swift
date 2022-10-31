@@ -8,46 +8,7 @@
 import UIKit
 import AppAuth
 
-public protocol OpenIdManaging: AnyObject {
-	
-	/// Request an access token
-	/// - Parameters:
-	///   - configuration: openID configuration
-	///   - onCompletion: ompletion handler with optional access token
-	///   - onError: error handler
-	func requestAccessToken(
-		issuerConfiguration: IssuerConfiguration,
-		presentingViewController: UIViewController?,
-		onCompletion: @escaping (OpenIdManagerToken) -> Void,
-		onError: @escaping (Error?) -> Void)
-}
-
-public protocol IssuerConfiguration: AnyObject {
-	
-	var issuerUrl: URL { get }
-
-	var clientId: String { get }
-
-	var redirectUri: URL { get }
-}
-
-public protocol OpenIdManagerToken {
-	
-	var idToken: String? { get }
-	var accessToken: String? { get }
-}
-
-extension OIDTokenResponse: OpenIdManagerToken {
-	
-}
-
-public extension Notification.Name {
-	
-	static let launchingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.launchingOpenIDConnectBrowser")
-	static let closingOpenIDConnectBrowser = Notification.Name("nl.rijksoverheid.rdo.closingOpenIDConnectBrowser")
-}
-
-public class OpenIdManager: OpenIdManaging {
+public class OpenIDConnectManager: OpenIDConnectManaging {
 	
 	public init() {}
 	
@@ -57,9 +18,9 @@ public class OpenIdManager: OpenIdManaging {
 	///   - onCompletion: ompletion handler with optional access token
 	///   - onError: error handler
 	public func requestAccessToken(
-		issuerConfiguration: IssuerConfiguration,
+		issuerConfiguration: OpenIDConnectConfiguration,
 		presentingViewController: UIViewController?,
-		onCompletion: @escaping (OpenIdManagerToken) -> Void,
+		onCompletion: @escaping (OpenIDConnectToken) -> Void,
 		onError: @escaping (Error?) -> Void) {
 			
 			discoverServiceConfiguration(issuerConfiguration: issuerConfiguration) { [weak self] result in
@@ -80,10 +41,10 @@ public class OpenIdManager: OpenIdManaging {
 		}
 	
 	private func requestAuthorization(
-		issuerConfiguration: IssuerConfiguration,
+		issuerConfiguration: OpenIDConnectConfiguration,
 		serviceConfiguration: OIDServiceConfiguration,
 		presentingViewController: UIViewController?,
-		onCompletion: @escaping (OpenIdManagerToken) -> Void,
+		onCompletion: @escaping (OpenIDConnectToken) -> Void,
 		onError: @escaping (Error?) -> Void) {
 			
 			let request = generateRequest(
@@ -91,7 +52,7 @@ public class OpenIdManager: OpenIdManaging {
 				serviceConfiguration: serviceConfiguration
 			)
 			
-			if let appAuthState = UIApplication.shared.delegate as? AppAuthState {
+			if let appAuthState = UIApplication.shared.delegate as? OpenIDConnectState {
 				
 				if #unavailable(iOS 13) {
 					NotificationCenter.default.post(name: .launchingOpenIDConnectBrowser, object: nil)
@@ -105,7 +66,6 @@ public class OpenIdManager: OpenIdManaging {
 						if let lastTokenResponse = authState?.lastTokenResponse {
 							onCompletion(lastTokenResponse)
 						} else {
-//							logError("OpenIdManager: \(String(describing: error))")
 							onError(error)
 						}
 					}
@@ -131,7 +91,7 @@ public class OpenIdManager: OpenIdManaging {
 	/// - Parameters:
 	///   - issuerConfiguration: The openID configuration
 	///   - onCompletion: Service Configuration or error
-	private func discoverServiceConfiguration(issuerConfiguration: IssuerConfiguration, onCompletion: @escaping (Result<OIDServiceConfiguration, Error>) -> Void) {
+	private func discoverServiceConfiguration(issuerConfiguration: OpenIDConnectConfiguration, onCompletion: @escaping (Result<OIDServiceConfiguration, Error>) -> Void) {
 		
 		OIDAuthorizationService.discoverConfiguration(forIssuer: issuerConfiguration.issuerUrl) { serviceConfiguration, error in
 			DispatchQueue.main.async {
@@ -149,7 +109,7 @@ public class OpenIdManager: OpenIdManaging {
 	///   - issuerConfiguration: The openID configuration
 	///   - serviceConfiguration: Service Configuration
 	/// - Returns: Open Id Authorization Request
-	private func generateRequest(issuerConfiguration: IssuerConfiguration, serviceConfiguration: OIDServiceConfiguration) -> OIDAuthorizationRequest {
+	private func generateRequest(issuerConfiguration: OpenIDConnectConfiguration, serviceConfiguration: OIDServiceConfiguration) -> OIDAuthorizationRequest {
 		
 		// builds authentication request
 		let request = OIDAuthorizationRequest(
