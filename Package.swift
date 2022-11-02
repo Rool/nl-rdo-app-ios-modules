@@ -46,6 +46,7 @@ let package = Package(
 			dependencies: [.product(name: "AppAuth", package: "AppAuth-iOS")]),
 		.testTarget(
 			name: "OpenIDConnectTests",
-			dependencies: ["OpenIDConnect", "OHHTTPStubs", .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")])
+			dependencies: ["OpenIDConnect", "OHHTTPStubs", .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")]
+		)
 	]
 )
