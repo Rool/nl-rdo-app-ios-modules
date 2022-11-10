@@ -11,7 +11,7 @@ import AppAuth
 public class OpenIDConnectManager: OpenIDConnectManaging {
 	
 	public init() {}
-
+	
 	/// Request an access token
 	/// - Parameters:
 	///   - issuerConfiguration: openID configuration

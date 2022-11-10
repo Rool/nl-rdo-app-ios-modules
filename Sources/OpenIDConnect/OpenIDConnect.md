@@ -73,8 +73,6 @@ class AuthenticationViewModel {
 }
 ```
 
-
-
 The authorization response URL is returned to the app via the iOS openURL app delegate method, so you need to pipe this through to the current authorization session (created in the previous session):
 
 ```swift
@@ -112,8 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OpenIDConnectState {
 	func application(_: UIApplication, continue userActivity: NSUserActivity, restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
 		
 		// Apple's docs specify to only handle universal links "with the activityType set to NSUserActivityTypeBrowsingWeb"
-		guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-			  let url = userActivity.webpageURL
+		guard userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL
 		else { return false }
 		
 		if url.path.hasPrefix("path from MyOpenIDConnectConfiguration redirect uri"),
