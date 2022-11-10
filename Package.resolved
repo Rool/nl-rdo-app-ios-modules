@@ -17,6 +17,15 @@
         "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
         "version" : "9.1.0"
       }
+    },
+    {
+      "identity" : "openssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/OpenSSL.git",
+      "state" : {
+        "revision" : "52db2ab9de7f78d1dea0d728fddd47fb133e25b7",
+        "version" : "1.1.1900"
+      }
     }
   ],
   "version" : 2

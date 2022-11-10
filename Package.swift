@@ -10,25 +10,38 @@ let package = Package(
 	],
 	products: [
 		.library(
+			name: "HTTPSecurity",
+			targets: ["HTTPSecurity"]),
+		.library(
 			name: "LuhnCheck",
 			targets: ["LuhnCheck"]),
 		.library(
-			name: "QRGenerator",
-			targets: ["QRGenerator"]),
-		.library(
 			name: "OpenIDConnect",
-			targets: ["OpenIDConnect"])
+			targets: ["OpenIDConnect"]),
+		.library(
+			name: "QRGenerator",
+			targets: ["QRGenerator"])
 	],
 	dependencies: [
 		.package(
 			// A fork has been used to support both universal links and url schemes
 			// Forked from: https://github.com/openid/AppAuth-iOS
 			url: "https://github.com/Rool/AppAuth-iOS.git",
-			branch: "feature/custom-url-support"
-		),
-		.package(url: "https://github.com/AliSoftware/OHHTTPStubs.git", from: "9.0.0")
+			branch: "feature/custom-url-support"),
+		.package(
+			url: "https://github.com/AliSoftware/OHHTTPStubs.git",
+			from: "9.0.0"),
+		.package(
+			url: "https://github.com/krzyzanowskim/OpenSSL.git",
+			from: "1.1.1900")
 	],
 	targets: [
+		.target(
+			name: "HTTPSecurity",
+			dependencies: ["OpenSSL"]),
+		.testTarget(
+			name: "HTTPSecurityTests",
+			dependencies: ["HTTPSecurity"]),
 		.target(
 			name: "LuhnCheck",
 			dependencies: []),
