@@ -16,6 +16,9 @@ let package = Package(
 			name: "HTTPSecurityObjC",
 			targets: ["HTTPSecurityObjC"]),
 		.library(
+			name: "Logging",
+			targets: ["Logging"]),
+		.library(
 			name: "LuhnCheck",
 			targets: ["LuhnCheck"]),
 		.library(
@@ -41,13 +44,17 @@ let package = Package(
 	targets: [
 		.target(
 			name: "HTTPSecurity",
-			dependencies: ["HTTPSecurityObjC"]),
+			dependencies: ["HTTPSecurityObjC", "Logging"]),
 		.target(
 			name: "HTTPSecurityObjC",
 			dependencies: ["OpenSSL"]),
 		.testTarget(
 			name: "HTTPSecurityTests",
 			dependencies: ["HTTPSecurity"]),
+		.target(
+			name: "Logging",
+			dependencies: [],
+			exclude: ["user-defined-settings.png"]),
 		.target(
 			name: "LuhnCheck",
 			dependencies: []),

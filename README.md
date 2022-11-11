@@ -2,9 +2,10 @@
 
 This package contains:
 
+- [Logging](/Sources/Logging/Logging.md) a simple logging tool
 - [Luhn Check](/Sources/LuhnCheck/LuhnCheck.md) for validating tokens
-- [QRGenerator](/Sources/QRGenerator/QRGenerator.md) to assist creating a QR-code
 - [OpenIDConnect](/Sources/OpenIDConnect/OpenIDConnect.md) to assist connecting to OpenID
+- [QRGenerator](/Sources/QRGenerator/QRGenerator.md) to assist creating a QR-code
 - HTTP Security (todo)
 
 ## Installation
@@ -32,8 +33,3 @@ Git commits must be signed https://docs.github.com/en/github/authenticating-to-g
 ## License
 
 License is released under the EUPL 1.2 license. [See LICENSE](https://github.com/minvws/nl-rdo-app-ios-modules/blob/master/LICENSE.txt) for details.
-
-
-
-
-
