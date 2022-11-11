@@ -7,6 +7,7 @@
 
 import Foundation
 import HTTPSecurityObjC
+import Logging
 
 /// Security check for backend communication
 public class CMSSignatureValidator: SignatureValidation {
@@ -33,13 +34,13 @@ public class CMSSignatureValidator: SignatureValidation {
 			
 			if let subjectKeyIdentifier = signer.subjectKeyIdentifier,
 			   !x509Validator.validateSubjectKeyIdentifier(subjectKeyIdentifier, forCertificateData: certificateData) {
-//				logError("validateSubjectKeyIdentifier(subjectKeyIdentifier) failed")
+				logError("CMSSignatureValidator - validateSubjectKeyIdentifier(subjectKeyIdentifier) failed")
 				return false
 			}
 			
 			if let serial = signer.rootSerial,
 			   !x509Validator.validateSerialNumber( serial, forCertificateData: certificateData) {
-//				logError("validateSerialNumber(serial) is invalid")
+				logError("CMSSignatureValidator - validateSerialNumber(serial) is invalid")
 				return false
 			}
 			
@@ -53,42 +54,5 @@ public class CMSSignatureValidator: SignatureValidation {
 			}
 		}
 		return false
-	}
-}
-
-public struct SigningCertificate {
-
-	/// The name of the certificate
-	public let name: String
-
-	/// The certificate
-	public let certificate: String
-
-	/// The required common name
-	public var commonName: String?
-
-	/// The required authority Key
-	public var authorityKeyIdentifier: Data?
-
-	/// The required subject key
-	public let subjectKeyIdentifier: Data?
-
-	/// The serial number
-	public let rootSerial: UInt64?
-	
-	public init(name: String, certificate: String, commonName: String? = nil, authorityKeyIdentifier: Data? = nil, subjectKeyIdentifier: Data? = nil, rootSerial: UInt64? = nil) {
-		self.name = name
-		self.certificate = certificate
-		self.commonName = commonName
-		self.authorityKeyIdentifier = authorityKeyIdentifier
-		self.subjectKeyIdentifier = subjectKeyIdentifier
-		self.rootSerial = rootSerial
-	}
-
-	/// Get the certificate data
-	/// - Returns: the certificate data
-	public func getCertificateData() -> Data {
-
-		return Data(certificate.utf8)
 	}
 }
