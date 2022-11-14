@@ -39,18 +39,23 @@ let package = Package(
 			from: "9.0.0"),
 		.package(
 			url: "https://github.com/krzyzanowskim/OpenSSL.git",
-			from: "1.1.1900")
+			from: "1.1.1900"),
+		.package(
+			url: "https://github.com/Quick/Nimble.git",
+			from: "10.0.0")
 	],
 	targets: [
 		.target(
 			name: "HTTPSecurity",
-			dependencies: ["HTTPSecurityObjC", "Logging"]),
+			dependencies: ["HTTPSecurityObjC", "Logging"],
+			resources: [.process("TestCertificates")]),
 		.target(
 			name: "HTTPSecurityObjC",
 			dependencies: ["OpenSSL"]),
 		.testTarget(
 			name: "HTTPSecurityTests",
-			dependencies: ["HTTPSecurity"]),
+			dependencies: ["HTTPSecurity", "Nimble"],
+			resources: [.copy("TestCertificates")]),
 		.target(
 			name: "Logging",
 			dependencies: [],
