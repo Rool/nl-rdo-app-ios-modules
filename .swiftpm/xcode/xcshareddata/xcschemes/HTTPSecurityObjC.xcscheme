@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "QRGenerator"
-               BuildableName = "QRGenerator"
-               BlueprintName = "QRGenerator"
+               BlueprintIdentifier = "HTTPSecurityObjC"
+               BuildableName = "HTTPSecurityObjC"
+               BlueprintName = "HTTPSecurityObjC"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "QRGenerator"
-            BuildableName = "QRGenerator"
-            BlueprintName = "QRGenerator"
+            BlueprintIdentifier = "HTTPSecurityObjC"
+            BuildableName = "HTTPSecurityObjC"
+            BlueprintName = "HTTPSecurityObjC"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
