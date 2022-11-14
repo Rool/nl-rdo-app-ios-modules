@@ -10,14 +10,14 @@ import Nimble
 @testable import HTTPSecurity
 @testable import HTTPSecurityObjC
 
-class X509ValidatorChainTests: XCTestCase {
+class AppTransportSecurityCheckerChainTests: XCTestCase {
 	
-	var sut = X509Validator()
+	var sut = AppTransportSecurityChecker()
 	
 	override func setUp() {
 		
 		super.setUp()
-		sut = X509Validator()
+		sut = AppTransportSecurityChecker()
 	}
 
 	func needs_fixing_expired_DSTRootCAX3_test_fake_chain() {
@@ -41,30 +41,30 @@ class X509ValidatorChainTests: XCTestCase {
 			realChain02
 		]
 
-		let fakeLeafCert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: fakeLeaf)
+		let fakeLeafCert = sut.certificateFromPEM(certificateAsPemData: fakeLeaf)
 		XCTAssert(fakeLeafCert != nil)
 
 		var fakeCertArray = [SecCertificate]()
 		for certPem in fakeChain {
-			let cert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: certPem)
+			let cert = sut.certificateFromPEM(certificateAsPemData: certPem)
 			XCTAssert(cert != nil)
 			fakeCertArray.append(cert!)
 		}
 
-		let realLeafCert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: realLeaf)
+		let realLeafCert = sut.certificateFromPEM(certificateAsPemData: realLeaf)
 		XCTAssert(fakeLeafCert != nil)
 
 		var realCertArray = [SecCertificate]()
 		for certPem in realChain {
-			let cert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: certPem)
+			let cert = sut.certificateFromPEM(certificateAsPemData: certPem)
 			XCTAssert(cert != nil)
 			realCertArray.append(cert!)
 		}
 
 		// Create a 'wrorst case' kitchen sink chain with as much in it as we can think off.
 		//
-		let realRootCert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: realRoot)
-		let fakeRootCert = AppTransportSecurityChecker().certificateFromPEM(certificateAsPemData: fakeRoot)
+		let realRootCert = sut.certificateFromPEM(certificateAsPemData: realRoot)
+		let fakeRootCert = sut.certificateFromPEM(certificateAsPemData: fakeRoot)
 		let allChainCerts = realCertArray + fakeCertArray + [ realRootCert, fakeRootCert]
 
 		// This should fail - as the root is not build in. It may however
@@ -85,7 +85,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should success - as we rely on the build in well known root.
 			//
-			XCTAssertTrue(AppTransportSecurityChecker().check(
+			XCTAssertTrue(sut.check(
 							serverTrust: realServerTrust,
 							policies: [policy],
 							trustedCertificates: [])
@@ -93,7 +93,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should succeed - as we explictly rely on the root.
 			//
-			XCTAssertTrue(AppTransportSecurityChecker().check(
+			XCTAssertTrue(sut.check(
 							serverTrust: realServerTrust,
 							policies: [policy],
 							trustedCertificates: [ realRoot ])
@@ -101,7 +101,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should fail - as we are giving it the wrong root.
 			//
-			XCTAssertFalse(AppTransportSecurityChecker().check(
+			XCTAssertFalse(sut.check(
 							serverTrust: realServerTrust,
 							policies: [policy],
 							trustedCertificates: [fakeRoot])
@@ -120,7 +120,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should succeed - as we have the fake root as part of our trust
 			//
-			XCTAssertTrue(AppTransportSecurityChecker().check(
+			XCTAssertTrue(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [fakeRoot ])
@@ -148,7 +148,7 @@ class X509ValidatorChainTests: XCTestCase {
 			// 4) Enabling it as trusted in Settings->About->Certificate Trust settings.
 			// but we've not gotten this to work reliably yet (just once).
 			//
-			XCTAssertFalse(AppTransportSecurityChecker().check(
+			XCTAssertFalse(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [])
@@ -156,7 +156,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should fail - as we are giving it the wrong root to trust.
 			//
-			XCTAssertFalse(AppTransportSecurityChecker().check(
+			XCTAssertFalse(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [ realRoot ])
@@ -164,7 +164,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should succeed - as we are giving it the right root to trust.
 			//
-			XCTAssertTrue(AppTransportSecurityChecker().check(
+			XCTAssertTrue(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [ fakeRoot ])
@@ -187,7 +187,7 @@ class X509ValidatorChainTests: XCTestCase {
 			// succeed if the user has somehow the fake root into the system trust
 			// chain -and- set it to 'trusted' (or was fooled/hacked into that).
 			//
-			XCTAssertFalse(AppTransportSecurityChecker().check(
+			XCTAssertFalse(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [])
@@ -195,7 +195,7 @@ class X509ValidatorChainTests: XCTestCase {
 
 			// This should fail - as we are giving it the wrong cert..
 			//
-			XCTAssertFalse(AppTransportSecurityChecker().check(
+			XCTAssertFalse(sut.check(
 							serverTrust: fakeServerTrust,
 							policies: [policy],
 							trustedCertificates: [ realRoot ])
