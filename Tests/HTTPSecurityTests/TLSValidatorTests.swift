@@ -10,14 +10,14 @@ import Nimble
 @testable import HTTPSecurity
 @testable import HTTPSecurityObjC
 
-class X509ValidatorSANTests: XCTestCase {
+class TLSValidatorTests: XCTestCase {
 
-	var sut = X509Validator()
+	var sut: TLSValidator!
 
 	override func setUp() {
 
 		super.setUp()
-		sut = X509Validator()
+		sut = TLSValidator()
 	}
 
 	// MARK: - Subject Alternative Name
@@ -45,12 +45,12 @@ class X509ValidatorSANTests: XCTestCase {
 		let certificateData = try Data(contentsOf: certificateUrl)
 
 		// When
-		let sans = sut.getSubjectAlternativeDNSNames(certificateData) as? [String]
+		let sans = sut.getSubjectAlternativeDNSNames(for: certificateData)
 
 		// Then
 		expect(sans).to(haveCount(1))
 		expect(sans?.first) == "api-ct.bananenhalen.nl"
-		expect(self.sut.validateSubjectAlternativeDNSName("api-ct.bananenhalen.nl", forCertificateData: certificateData)) == true
+		expect(self.sut.validateSubjectAlternativeDNSName("api-ct.bananenhalen.nl", for: certificateData)) == true
 	}
 
 	func test_subjectAlternativeNames_fakeLeaf() throws {
@@ -67,7 +67,7 @@ class X509ValidatorSANTests: XCTestCase {
 		let certificateData = try Data(contentsOf: certificateUrl)
 
 		// When
-		let sans = sut.getSubjectAlternativeDNSNames(certificateData) as? [String]
+		let sans = sut.getSubjectAlternativeDNSNames(for: certificateData)
 
 		// Then
 		expect(sans).to(haveCount(2))
@@ -80,11 +80,11 @@ class X509ValidatorSANTests: XCTestCase {
 		expect(sans?.first) == "test1"
 		expect(sans?.last) == "test2"
 
-		expect(self.sut.validateSubjectAlternativeDNSName("test1", forCertificateData: certificateData)) == true
-		expect(self.sut.validateSubjectAlternativeDNSName("test2", forCertificateData: certificateData)) == true
+		expect(self.sut.validateSubjectAlternativeDNSName("test1", for: certificateData)) == true
+		expect(self.sut.validateSubjectAlternativeDNSName("test2", for: certificateData)) == true
 		// check that we do not see the non DNS entries. IP address is a bit of an edge case. Perhaps
 		// we should allow that to match.
-		expect(self.sut.validateSubjectAlternativeDNSName("fo@bar", forCertificateData: certificateData)) == false
+		expect(self.sut.validateSubjectAlternativeDNSName("fo@bar", for: certificateData)) == false
 	}
 
 	func test_subjectAlternativeNames_certWithSanRightAndCNWrong() throws {
@@ -103,7 +103,7 @@ class X509ValidatorSANTests: XCTestCase {
 		let certificateData = try Data(contentsOf: certificateUrl)
 
 		// When
-		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", forCertificateData: certificateData)
+		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", for: certificateData)
 
 		// Then
 		expect(result) == false
@@ -123,7 +123,7 @@ class X509ValidatorSANTests: XCTestCase {
 		let certificateData = try Data(contentsOf: certificateUrl)
 
 		// When
-		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", forCertificateData: certificateData)
+		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", for: certificateData)
 
 		// Then
 		expect(result) == false
@@ -141,8 +141,38 @@ class X509ValidatorSANTests: XCTestCase {
 		let certificateData = try Data(contentsOf: certificateUrl)
 
 		// When
-		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", forCertificateData: certificateData)
+		let result = sut.validateSubjectAlternativeDNSName("foobar.nl", for: certificateData)
 
+		// Then
+		expect(result) == false
+	}
+	
+	func test_compare_identicalCertificates() throws {
+		
+		// Given
+		let certificateUrl1 = try XCTUnwrap(Bundle.module.url(forResource: "holder-api.coronacheck.nl", withExtension: ".pem"))
+		let certificateData1 = try Data(contentsOf: certificateUrl1)
+		let certificateUrl2 = try XCTUnwrap(Bundle.module.url(forResource: "holder-api.coronacheck.nl", withExtension: ".pem"))
+		let certificateData2 = try Data(contentsOf: certificateUrl2)
+		
+		// When
+		let result = sut.compare(certificateData1, with: certificateData2)
+		
+		// Then
+		expect(result) == true
+	}
+	
+	func test_compare_differentCertificates() throws {
+		
+		// Given
+		let certificateUrl1 = try XCTUnwrap(Bundle.module.url(forResource: "holder-api.coronacheck.nl", withExtension: ".pem"))
+		let certificateData1 = try Data(contentsOf: certificateUrl1)
+		let certificateUrl2 = try XCTUnwrap(Bundle.module.url(forResource: "Staat der Nederlanden Private Root CA - G1", withExtension: ".pem"))
+		let certificateData2 = try Data(contentsOf: certificateUrl2)
+		
+		// When
+		let result = sut.compare(certificateData1, with: certificateData2)
+		
 		// Then
 		expect(result) == false
 	}

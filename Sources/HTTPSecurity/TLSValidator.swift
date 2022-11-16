@@ -8,12 +8,17 @@
 import Foundation
 import HTTPSecurityObjC
 
-public class TLSCertificateHelper {
+public class TLSValidator {
 	
 	let x509Validator = X509Validator()
 	
 	public init() {}
 	
+	public func getSubjectAlternativeDNSNames(for certificateData: Data) -> [String]? {
+		
+		return x509Validator.getSubjectAlternativeDNSNames(certificateData) as? [String]
+	}
+
 	public func validateSubjectAlternativeDNSName(_ hostname: String, for certificateData: Data) -> Bool {
 		
 		return x509Validator.validateSubjectAlternativeDNSName(hostname, forCertificateData: certificateData)

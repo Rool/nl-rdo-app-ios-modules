@@ -17,14 +17,14 @@ public protocol SignatureValidation {
 	func validate(signature: Data, content: Data) -> Bool
 }
 
-extension SignatureValidation {
+public extension SignatureValidation {
 	
 	/// Validate a signature
 	/// - Parameters:
 	///   - data: the signed content
 	///   - signature: the signature
 	///   - completion: Completion handler
-	public func validate(data: Data, signature: Data, completion: @escaping (Bool) -> Void) {
+	func validate(data: Data, signature: Data, completion: @escaping (Bool) -> Void) {
 		DispatchQueue.global().async {
 			let result = validate(signature: signature, content: data)
 			

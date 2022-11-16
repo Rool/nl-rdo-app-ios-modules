@@ -12,7 +12,7 @@ import Nimble
 
 class X509ValidatorTests: XCTestCase {
 	
-	private var sut = X509Validator()
+	private var sut: X509Validator!
 	
 	override func setUp() {
 		

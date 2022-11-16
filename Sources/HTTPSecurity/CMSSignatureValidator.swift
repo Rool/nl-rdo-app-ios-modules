@@ -12,8 +12,8 @@ import Logging
 /// Security check for backend communication
 public class CMSSignatureValidator: SignatureValidation {
 	
-	var trustedSigners: [SigningCertificate]
-	let x509Validator = X509Validator()
+	private var trustedSigners: [SigningCertificate]
+	private let x509Validator = X509Validator()
 	
 	public init(trustedSigners: [SigningCertificate] = []) {
 		

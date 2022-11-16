@@ -54,8 +54,7 @@ let package = Package(
 			dependencies: ["OpenSSL"]),
 		.testTarget(
 			name: "HTTPSecurityTests",
-			dependencies: ["HTTPSecurity", "Nimble"],
-			resources: [.copy("TestCertificates")]),
+			dependencies: ["HTTPSecurity", "Nimble"]),
 		.target(
 			name: "Logging",
 			dependencies: [],

@@ -12,7 +12,7 @@ import Nimble
 
 class AppTransportSecurityCheckerChainTests: XCTestCase {
 	
-	var sut = AppTransportSecurityChecker()
+	private var sut: AppTransportSecurityChecker!
 	
 	override func setUp() {
 		
