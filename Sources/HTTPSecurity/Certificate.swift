@@ -8,15 +8,15 @@
 import Foundation
 import Security
 
-struct Certificate {
+public struct Certificate {
 
 	private let secCertificate: SecCertificate
 	
-	init(certificate: SecCertificate) {
+	public init(certificate: SecCertificate) {
 		self.secCertificate = certificate
 	}
 
-	var data: Data {
+	public var data: Data {
 
 		let data = SecCertificateCopyData(secCertificate) as Data
 		let base64String = data.base64EncodedString()
@@ -24,7 +24,7 @@ struct Certificate {
 		return Data(fullString.utf8)
 	}
 
-	var commonName: String? {
+	public var commonName: String? {
 
 		var name: CFString?
 		let status = SecCertificateCopyCommonName(secCertificate, &name)
